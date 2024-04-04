@@ -32,7 +32,7 @@ services:
     image: node:latest
     container_name: node-docker
     ports:
-      - '3000:3000'
+      - '9999:9999'
     working_dir: /opt/app
     volumes:
       - ./gate-simulator:/opt/app

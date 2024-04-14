@@ -40,9 +40,9 @@ public class PaymentGateTest {
         $x("//div[3]//span[1]/span/span/span[2]/input").setValue("Vladimirova");
         $(".input__control[maxlength='3']").setValue("111");
         $x("//div[4]/button").click();
-
-
-
+        $(".notification__content")
+                .shouldBe(Condition.visible, Duration.ofSeconds(15))
+                .shouldHave(Condition.exactText("Операция одобрена Банком."));
 
     }
     @Test
@@ -53,14 +53,11 @@ public class PaymentGateTest {
         $(".input__control[maxlength='19']").setValue("");
         $(".input__control[placeholder='08']").setValue("");
         $(".input__control[placeholder='22']").setValue("");
-        $x("//*[text()='Владелец']").setValue("");
-        //$x("//button[contains(text(),'Владелец']").setValue("Vladimirova");
-
+        $x("//div[3]//span[1]/span/span/span[2]/input").setValue("Vladimirova");
         $(".input__control[maxlength='3']").setValue("");
         $("button.button__text:contains('Продолжить')").click();
-        //$(".notification__content") неверный формат полей
-        //  .shouldBe(Condition.visible, Duration.ofSeconds(15))
-        //    .shouldHave(Condition.exactText(""));
+        $x("//div[4]/button").click();
+
     }
     @Test
     @DisplayName("CardNumberInvalid")
@@ -70,12 +67,12 @@ public class PaymentGateTest {
         $(".input__control[maxlength='19']").setValue("4444 4444 4444 444");
         $(".input__control[placeholder='08']").setValue("07");
         $(".input__control[placeholder='22']").setValue("27");
-        $x("//*[text()='Владелец']").setValue("Vladimirova");
-        //$x("//button[contains(text(),'Владелец']").setValue("Vladimirova");
-
+        $x("//div[3]//span[1]/span/span/span[2]/input").setValue("Vladimirova");
         $(".input__control[maxlength='3']").setValue("111");
-        $("button.button__text:contains('Продолжить')").click();
-        // $(".notification__content") Неверный формат
+        $x("//div[4]/button").click();
+        $(".input__sub")
+                .shouldHave(Condition.exactText("Неверный формат"));
+
     }
     @Test
     @DisplayName("OneDigitMonth")
@@ -85,12 +82,11 @@ public class PaymentGateTest {
         $(".input__control[maxlength='19']").setValue("4444 4444 4444 4441");
         $(".input__control[placeholder='08']").setValue("7");
         $(".input__control[placeholder='22']").setValue("27");
-        $x("//*[text()='Владелец']").setValue("Vladimirova");
-        //$x("//button[contains(text(),'Владелец']").setValue("Vladimirova");
-
+        $x("//div[3]//span[1]/span/span/span[2]/input").setValue("Vladimirova");
         $(".input__control[maxlength='3']").setValue("111");
-        $("button.button__text:contains('Продолжить')").click();
-        // $(".notification__content") Неверный формат
+        $x("//div[4]/button").click();
+        $(".input__sub")
+                .shouldHave(Condition.exactText("Неверный формат"));
     }
     @Test
     @DisplayName("ThirteenMonth")
@@ -100,12 +96,11 @@ public class PaymentGateTest {
         $(".input__control[maxlength='19']").setValue("4444 4444 4444 4441");
         $(".input__control[placeholder='08']").setValue("13");
         $(".input__control[placeholder='22']").setValue("27");
-        $x("//*[text()='Владелец']").setValue("Vladimirova");
-        //$x("//button[contains(text(),'Владелец']").setValue("Vladimirova");
-
+        $x("//div[3]//span[1]/span/span/span[2]/input").setValue("Vladimirova");
         $(".input__control[maxlength='3']").setValue("111");
-        $("button.button__text:contains('Продолжить')").click();
-        // $(".notification__content")(Неверно указан срок действия карты)
+        $x("//div[4]/button").click();;
+        $(".input__sub")
+                .shouldHave(Condition.exactText("Неверно указан срок действия карты"));
     }
     @Test
     @DisplayName("OneDigitYear")
@@ -115,12 +110,11 @@ public class PaymentGateTest {
         $(".input__control[maxlength='19']").setValue("4444 4444 4444 4441");
         $(".input__control[placeholder='08']").setValue("07");
         $(".input__control[placeholder='22']").setValue("2");
-        $x("//*[text()='Владелец']").setValue("Vladimirova");
-        //$x("//button[contains(text(),'Владелец']").setValue("Vladimirova");
-
+        $x("//div[3]//span[1]/span/span/span[2]/input").setValue("Vladimirova");
         $(".input__control[maxlength='3']").setValue("111");
-        $("button.button__text:contains('Продолжить')").click();
-        // $(".notification__content")(Неверный формат)
+        $x("//div[4]/button").click();
+        $(".input__sub")
+                .shouldHave(Condition.exactText("Неверный формат"));
     }
     @Test
     @DisplayName("PreviousYear")
@@ -130,12 +124,13 @@ public class PaymentGateTest {
         $(".input__control[maxlength='19']").setValue("4444 4444 4444 4441");
         $(".input__control[placeholder='08']").setValue("07");
         $(".input__control[placeholder='22']").setValue("23");
-        $x("//*[text()='Владелец']").setValue("Vladimirova");
-        //$x("//button[contains(text(),'Владелец']").setValue("Vladimirova");
-
+        $x("//div[3]//span[1]/span/span/span[2]/input").setValue("Vladimirova");
         $(".input__control[maxlength='3']").setValue("111");
-        $("button.button__text:contains('Продолжить')").click();
-        // $(".notification__content")(Истёк срок действия карты)
+        $x("//div[4]/button").click();
+        $(".input__sub")
+                .shouldBe(Condition.visible, Duration.ofSeconds(15))
+                .shouldHave(Condition.exactText("Истёк срок действия карты"));
+
     }
     @Test
     @DisplayName("DigitHolder")
@@ -145,11 +140,9 @@ public class PaymentGateTest {
         $(".input__control[maxlength='19']").setValue("4444 4444 4444 4441");
         $(".input__control[placeholder='08']").setValue("07");
         $(".input__control[placeholder='22']").setValue("27");
-        $x("//*[text()='Владелец']").setValue("12345");
-        //$x("//button[contains(text(),'Владелец']").setValue("Vladimirova");
-
+        $x("//div[3]//span[1]/span/span/span[2]/input").setValue("12345");
         $(".input__control[maxlength='3']").setValue("111");
-        $("button.button__text:contains('Продолжить')").click();
+        $x("//div[4]/button").click();
         // $(".notification__content") Ошибка!
     }
     @Test
@@ -160,12 +153,9 @@ public class PaymentGateTest {
         $(".input__control[maxlength='19']").setValue("4444 4444 4444 4441");
         $(".input__control[placeholder='08']").setValue("07");
         $(".input__control[placeholder='22']").setValue("27");
-        $x("//*[text()='Владелец']").setValue("V");
-        //$x("//button[contains(text(),'Владелец']").setValue("Vladimirova");
-
+        $x("//div[3]//span[1]/span/span/span[2]/input").setValue("Vladimirova");
         $(".input__control[maxlength='3']").setValue("111");
-        $("button.button__text:contains('Продолжить')").click();
-        // $(".notification__content") Ошибка!
+        $x("//div[4]/button").click();
     }
     @Test
     @DisplayName("RuHolder")
@@ -175,11 +165,9 @@ public class PaymentGateTest {
         $(".input__control[maxlength='19']").setValue("4444 4444 4444 4441");
         $(".input__control[placeholder='08']").setValue("07");
         $(".input__control[placeholder='22']").setValue("27");
-        $x("//*[text()='Владелец']").setValue("Владимирова");
-        //$x("//button[contains(text(),'Владелец']").setValue("Vladimirova");
-
+        $x("//div[3]//span[1]/span/span/span[2]/input").setValue("Vladimirova");
         $(".input__control[maxlength='3']").setValue("111");
-        $("button.button__text:contains('Продолжить')").click();
+        $x("//div[4]/button").click();
         // $(".notification__content") Ошибка!
     }
     @Test
@@ -190,12 +178,9 @@ public class PaymentGateTest {
         $(".input__control[maxlength='19']").setValue("4444 4444 4444 4441");
         $(".input__control[placeholder='08']").setValue("07");
         $(".input__control[placeholder='22']").setValue("27");
-        $x("//*[text()='Владелец']").setValue("////???");
-        //$x("//button[contains(text(),'Владелец']").setValue("Vladimirova");
-
+        $x("//div[3]//span[1]/span/span/span[2]/input").setValue("Vladimirova");
         $(".input__control[maxlength='3']").setValue("111");
-        $("button.button__text:contains('Продолжить')").click();
-        // $(".notification__content") Ошибка!
+        $x("//div[4]/button").click();        // $(".notification__content") Ошибка!
     }
 
     @Test
@@ -206,12 +191,11 @@ public class PaymentGateTest {
         $(".input__control[maxlength='19']").setValue("4444 4444 4444 4441");
         $(".input__control[placeholder='08']").setValue("07");
         $(".input__control[placeholder='22']").setValue("27");
-        $x("//*[text()='Владелец']").setValue("VLADIMIROVA");
-        //$x("//button[contains(text(),'Владелец']").setValue("Vladimirova");
-
+        $x("//div[3]//span[1]/span/span/span[2]/input").setValue("Vladimirova");
         $(".input__control[maxlength='3']").setValue("11");
-        $("button.button__text:contains('Продолжить')").click();
-        // $(".notification__content") (Неверный формат)
+        $x("//div[4]/button").click();
+        $(".input__sub")
+                .shouldHave(Condition.exactText("Неверный формат"));
     }
 }
 

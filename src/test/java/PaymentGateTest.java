@@ -2,7 +2,6 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.Keys;
 
 import java.time.Duration;
 
@@ -54,15 +53,26 @@ public class PaymentGateTest {
         $x("//div[1]/span/span/span[2]/input").setValue("");
         $x("//div[2]/span/span[1]//input").setValue("");
         $x("//div[2]/span/span[2]//input").setValue("");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[1]//input").setValue("");
         $x("//div[3]/span/span[2]//input").setValue("");
         $x("//div[4]/button").click();
+        $x("//div[1]/span//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
+        $x("//div[2]/span/span[1]//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
+        $x("//div[2]/span/span[2]//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
+        $x("//div[3]/span/span[1]//span[3]")
+                .shouldHave(Condition.exactText("Поле обязательно для заполнения"));
+        $x("//div[3]/span/span[2]//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
+
 
     }
 
     @Test
-    @DisplayName("CardNumberInvalid")
-    void cardNumberInvalid() {
+    @DisplayName("Card15Digit")
+    void card15DigitInvalid() {
         $("button.button").find(byText("Купить")).click();
 
         $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 444");
@@ -71,7 +81,55 @@ public class PaymentGateTest {
         $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
         $x("//div[3]/span/span[2]//input").setValue("111");
         $x("//div[4]/button").click();
-        $(".input__sub")
+        $x("//div[1]/span//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
+
+    }
+
+    @Test
+    @DisplayName("Card17Digit")
+    void card17DigitInvalid() {
+        $("button.button").find(byText("Купить")).click();
+
+        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 44415");
+        $x("//div[2]/span/span[1]//input").setValue("07");
+        $x("//div[2]/span/span[2]//input").setValue("27");
+        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[2]//input").setValue("111");
+        $x("//div[4]/button").click();
+        $x("//div[1]/span//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
+
+    }
+
+    @Test
+    @DisplayName("CardLetters")
+    void cardLettersInvalid() {
+        $("button.button").find(byText("Купить")).click();
+
+        $x("//div[1]/span/span/span[2]/input").setValue("qwerty");
+        $x("//div[2]/span/span[1]//input").setValue("07");
+        $x("//div[2]/span/span[2]//input").setValue("27");
+        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[2]//input").setValue("111");
+        $x("//div[4]/button").click();
+        $x("//div[1]/span//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
+
+    }
+
+    @Test
+    @DisplayName("Card Symbol")
+    void cardSymbolInvalid() {
+        $("button.button").find(byText("Купить")).click();
+
+        $x("//div[1]/span/span/span[2]/input").setValue("///???");
+        $x("//div[2]/span/span[1]//input").setValue("07");
+        $x("//div[2]/span/span[2]//input").setValue("27");
+        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[2]//input").setValue("111");
+        $x("//div[4]/button").click();
+        $x("//div[1]/span//span[3]")
                 .shouldHave(Condition.exactText("Неверный формат"));
 
     }
@@ -87,10 +145,23 @@ public class PaymentGateTest {
         $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
         $x("//div[3]/span/span[2]//input").setValue("111");
         $x("//div[4]/button").click();
-        $(".input__sub")
+        $x("//div[2]/span/span[1]//span[3]")
                 .shouldHave(Condition.exactText("Неверный формат"));
     }
+    @Test
+    @DisplayName("ThreeDigitMonth")
+    void ThreeDigitMonth() {
+        $("button.button").find(byText("Купить")).click();
 
+        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
+        $x("//div[2]/span/span[1]//input").setValue("155");
+        $x("//div[2]/span/span[2]//input").setValue("27");
+        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[2]//input").setValue("111");
+        $x("//div[4]/button").click();
+        $x("//div[2]/span/span[1]//span[3]")
+                .shouldHave(Condition.exactText("Неверно указан срок действия карты"));
+    }
     @Test
     @DisplayName("ThirteenMonth")
     void thirteenMonth() {
@@ -102,9 +173,37 @@ public class PaymentGateTest {
         $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
         $x("//div[3]/span/span[2]//input").setValue("111");
         $x("//div[4]/button").click();
-        ;
-        $(".input__sub")
+        $x("//div[2]/span/span[1]//span[3]")
                 .shouldHave(Condition.exactText("Неверно указан срок действия карты"));
+    }
+
+    @Test
+    @DisplayName("Letters Month")
+    void lettersMonth() {
+        $("button.button").find(byText("Купить")).click();
+
+        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
+        $x("//div[2]/span/span[1]//input").setValue("qwerty");
+        $x("//div[2]/span/span[2]//input").setValue("27");
+        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[2]//input").setValue("111");
+        $x("//div[4]/button").click();
+        $x("//div[2]/span/span[1]//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
+    }
+    @Test
+    @DisplayName("Symbols Month")
+    void symbolsMonth() {
+        $("button.button").find(byText("Купить")).click();
+
+        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
+        $x("//div[2]/span/span[1]//input").setValue("///???");
+        $x("//div[2]/span/span[2]//input").setValue("27");
+        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[2]//input").setValue("111");
+        $x("//div[4]/button").click();
+        $x("//div[2]/span/span[1]//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
     }
 
     @Test
@@ -118,8 +217,22 @@ public class PaymentGateTest {
         $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
         $x("//div[3]/span/span[2]//input").setValue("111");
         $x("//div[4]/button").click();
-        $(".input__sub")
+        $x("//div[2]/span/span[2]//span[3]")
                 .shouldHave(Condition.exactText("Неверный формат"));
+    }
+    @Test
+    @DisplayName("ThreeDigitYear")
+    void ThreeDigitYear() {
+        $("button.button").find(byText("Купить")).click();
+
+        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
+        $x("//div[2]/span/span[1]//input").setValue("07");
+        $x("//div[2]/span/span[2]//input").setValue("345");
+        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[2]//input").setValue("111");
+        $x("//div[4]/button").click();
+        $x("//div[2]/span/span[2]//span[3]")
+                .shouldHave(Condition.exactText("Неверно указан срок действия карты"));
     }
 
     @Test
@@ -133,10 +246,39 @@ public class PaymentGateTest {
         $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
         $x("//div[3]/span/span[2]//input").setValue("111");
         $x("//div[4]/button").click();
-        $(".input__sub")
+        $x("//div[2]/span/span[2]//span[3]")
                 .shouldBe(Condition.visible, Duration.ofSeconds(15))
                 .shouldHave(Condition.exactText("Истёк срок действия карты"));
 
+    }
+    @Test
+    @DisplayName("Letters Year")
+    void lettersYear() {
+        $("button.button").find(byText("Купить")).click();
+
+        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
+        $x("//div[2]/span/span[1]//input").setValue("07");
+        $x("//div[2]/span/span[2]//input").setValue("qwerty");
+        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[2]//input").setValue("111");
+        $x("//div[4]/button").click();
+        $x("//div[2]/span/span[2]//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
+    }
+
+    @Test
+    @DisplayName("Symbol Year")
+    void symbolYear() {
+        $("button.button").find(byText("Купить")).click();
+
+        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
+        $x("//div[2]/span/span[1]//input").setValue("07");
+        $x("//div[2]/span/span[2]//input").setValue("///???");
+        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[2]//input").setValue("111");
+        $x("//div[4]/button").click();
+        $x("//div[2]/span/span[2]//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
     }
 
     @Test
@@ -150,7 +292,9 @@ public class PaymentGateTest {
         $x("//div[3]/span/span[1]//input").setValue("12345");
         $x("//div[3]/span/span[2]//input").setValue("111");
         $x("//div[4]/button").click();
-        // $(".notification__content") Ошибка!
+        $x("//div[3]/span/span[1]//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
+
     }
 
     @Test
@@ -161,9 +305,11 @@ public class PaymentGateTest {
         $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
         $x("//div[2]/span/span[1]//input").setValue("07");
         $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[1]//input").setValue("V");
         $x("//div[3]/span/span[2]//input").setValue("111");
         $x("//div[4]/button").click();
+        $x("//div[3]/span/span[1]//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
     }
 
     @Test
@@ -174,10 +320,12 @@ public class PaymentGateTest {
         $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
         $x("//div[2]/span/span[1]//input").setValue("07");
         $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[1]//input").setValue("Владимирова");
         $x("//div[3]/span/span[2]//input").setValue("111");
         $x("//div[4]/button").click();
-        // $(".notification__content") Ошибка!
+        $x("//div[3]/span/span[1]//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
+
     }
 
     @Test
@@ -188,14 +336,16 @@ public class PaymentGateTest {
         $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
         $x("//div[2]/span/span[1]//input").setValue("07");
         $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[1]//input").setValue("///???");
         $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();        // $(".notification__content") Ошибка!
+        $x("//div[4]/button").click();
+        $x("//div[3]/span/span[1]//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
     }
 
     @Test
-    @DisplayName("InvalidCVC")
-    void invalidCVC() {
+    @DisplayName("Two CVC")
+    void twoCVC() {
         $("button.button").find(byText("Купить")).click();
 
         $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
@@ -204,7 +354,35 @@ public class PaymentGateTest {
         $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
         $x("//div[3]/span/span[2]//input").setValue("11");
         $x("//div[4]/button").click();
-        $(".input__sub")
+        $x("//div[3]/span/span[2]//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
+    }
+    @Test
+    @DisplayName("Letters CVC")
+    void lettersCVC() {
+        $("button.button").find(byText("Купить")).click();
+
+        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
+        $x("//div[2]/span/span[1]//input").setValue("07");
+        $x("//div[2]/span/span[2]//input").setValue("27");
+        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[2]//input").setValue("qwe");
+        $x("//div[4]/button").click();
+        $x("//div[3]/span/span[2]//span[3]")
+                .shouldHave(Condition.exactText("Неверный формат"));
+    }
+    @Test
+    @DisplayName("Symbols CVC")
+    void symbolsCVC() {
+        $("button.button").find(byText("Купить")).click();
+
+        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
+        $x("//div[2]/span/span[1]//input").setValue("07");
+        $x("//div[2]/span/span[2]//input").setValue("27");
+        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
+        $x("//div[3]/span/span[2]//input").setValue("///");
+        $x("//div[4]/button").click();
+        $x("//div[3]/span/span[2]//span[3]")
                 .shouldHave(Condition.exactText("Неверный формат"));
     }
 }

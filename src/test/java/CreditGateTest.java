@@ -44,6 +44,7 @@ public class CreditGateTest {
                 .shouldHave(Condition.exactText("Операция одобрена Банком."));
 
     }
+
     @Test
     @DisplayName("InvalidCredit")
     void inValid() {
@@ -142,6 +143,7 @@ public class CreditGateTest {
         $x("//div[2]/span/span[1]//span[3]")
                 .shouldHave(Condition.exactText("Неверный формат"));
     }
+
     @Test
     @DisplayName("ThreeDigitMonthCredit")
     void ThreeDigitMonth() {
@@ -155,6 +157,7 @@ public class CreditGateTest {
         $x("//div[2]/span/span[1]//span[3]")
                 .shouldHave(Condition.exactText("Неверно указан срок действия карты"));
     }
+
     @Test
     @DisplayName("ThirteenMonthCredit")
     void thirteenMonth() {
@@ -183,6 +186,7 @@ public class CreditGateTest {
         $x("//div[2]/span/span[1]//span[3]")
                 .shouldHave(Condition.exactText("Неверный формат"));
     }
+
     @Test
     @DisplayName("Symbols Month Credit")
     void symbolsMonth() {
@@ -211,6 +215,7 @@ public class CreditGateTest {
         $x("//div[2]/span/span[2]//span[3]")
                 .shouldHave(Condition.exactText("Неверный формат"));
     }
+
     @Test
     @DisplayName("ThreeDigitYearCredit")
     void ThreeDigitYear() {
@@ -241,6 +246,7 @@ public class CreditGateTest {
                 .shouldHave(Condition.exactText("Истёк срок действия карты"));
 
     }
+
     @Test
     @DisplayName("Letters Year Credit")
     void lettersYear() {
@@ -346,6 +352,7 @@ public class CreditGateTest {
         $x("//div[3]/span/span[2]//span[3]")
                 .shouldHave(Condition.exactText("Неверный формат"));
     }
+
     @Test
     @DisplayName("Letters CVC Credit")
     void lettersCVC() {
@@ -360,6 +367,7 @@ public class CreditGateTest {
         $x("//div[3]/span/span[2]//span[3]")
                 .shouldHave(Condition.exactText("Неверный формат"));
     }
+
     @Test
     @DisplayName("Symbols CVC Credit")
     void symbolsCVC() {

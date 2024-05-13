@@ -2,6 +2,7 @@ import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
@@ -30,367 +31,337 @@ public class PaymentGateTest {
 
     @Test
     @DisplayName("All valid")
-    void allValid() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $(".notification__content")
-                .shouldBe(Condition.visible, Duration.ofSeconds(15))
-                .shouldHave(Condition.exactText("Операция одобрена Банком."));
+    public void allValid() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.waitForNotification("Операция одобрена Банком.");
 
     }
 
     @Test
     @DisplayName("Invalid")
-    void inValid() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("");
-        $x("//div[2]/span/span[1]//input").setValue("");
-        $x("//div[2]/span/span[2]//input").setValue("");
-        $x("//div[3]/span/span[1]//input").setValue("");
-        $x("//div[3]/span/span[2]//input").setValue("");
-        $x("//div[4]/button").click();
-        $x("//div[1]/span//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
-        $x("//div[2]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
-        $x("//div[2]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
-        $x("//div[3]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Поле обязательно для заполнения"));
-        $x("//div[3]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
-
+    public void inValid() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("");
+        checkoutPage.enterExpiryMonth("");
+        checkoutPage.enterExpiryYear("");
+        checkoutPage.enterCardHolderName("");
+        checkoutPage.enterCVV("");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.cardNumberFormat("Неверный формат");
+        checkoutPage.expiryMonthFormat("Неверный формат");
+        checkoutPage.expiryYearFormat("Неверный формат");
+        checkoutPage.cardNameSure("Поле обязательно для заполнения");
+        checkoutPage.cvvFormat("Неверный формат");
 
     }
 
     @Test
     @DisplayName("Card15Digit")
-    void card15DigitInvalid() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 444");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[1]/span//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void card15DigitInvalid() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 444");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.cardNumberFormat("Неверный формат");
 
     }
 
     @Test
     @DisplayName("Card17Digit")
-    void card17DigitInvalid() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 44415");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[1]/span//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void card17DigitInvalid() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 44415");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.cardNumberFormat("Неверный формат");
 
     }
 
     @Test
     @DisplayName("CardLetters")
-    void cardLettersInvalid() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("qwerty");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[1]/span//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void cardLettersInvalid() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("qwerty");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.cardNumberFormat("Неверный формат");
 
     }
 
     @Test
     @DisplayName("Card Symbol")
-    void cardSymbolInvalid() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("///???");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[1]/span//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void cardSymbolInvalid() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("///???");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.cardNumberFormat("Неверный формат");
 
     }
 
     @Test
     @DisplayName("OneDigitMonth")
-    void oneDigitMonth() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("7");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void oneDigitMonth() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("7");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.expiryMonthFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("ThreeDigitMonth")
-    void ThreeDigitMonth() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("155");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверно указан срок действия карты"));
+    public void ThreeDigitMonth() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("155");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.monthNotFormat("Неверно указан срок действия карты");
     }
 
     @Test
     @DisplayName("ThirteenMonth")
-    void thirteenMonth() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("13");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверно указан срок действия карты"));
+    public void thirteenMonth() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("13");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.monthNotFormat("Неверно указан срок действия карты");
     }
 
     @Test
     @DisplayName("Letters Month")
-    void lettersMonth() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("qwerty");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void lettersMonth() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("qwerty");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.cardNumberFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("Symbols Month")
-    void symbolsMonth() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("///???");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void symbolsMonth() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("///???");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.cardNumberFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("OneDigitYear")
-    void oneDigitYear() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("2");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void oneDigitYear() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("2");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.expiryYearFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("ThreeDigitYear")
-    void ThreeDigitYear() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("345");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверно указан срок действия карты"));
+    public void ThreeDigitYear() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("345");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.yearNotFormat("Неверно указан срок действия карты");
     }
 
     @Test
     @DisplayName("PreviousYear")
-    void previousYear() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("23");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[2]//span[3]")
-                .shouldBe(Condition.visible, Duration.ofSeconds(15))
-                .shouldHave(Condition.exactText("Истёк срок действия карты"));
+    public void previousYear() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("23");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.yearExpired("Истёк срок действия карты");
 
     }
 
     @Test
     @DisplayName("Letters Year")
-    void lettersYear() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("qwerty");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void lettersYear() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("qwerty");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.expiryYearFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("Symbol Year")
-    void symbolYear() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("///???");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void symbolYear() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("///???");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.expiryYearFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("DigitHolder")
-    void digitHolder() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("12345");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[3]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void digitHolder() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("12345");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.cardNameFormat("Неверный формат");
 
     }
 
     @Test
     @DisplayName("OneLetterHolder")
-    void oneLetterHolder() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("V");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[3]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void oneLetterHolder() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("V");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.cardNameFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("RuHolder")
-    void ruHolder() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Владимирова");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[3]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void ruHolder() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Владимирова");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.cardNameFormat("Неверный формат");
 
     }
 
     @Test
     @DisplayName("SymbolsHolder")
-    void symbolsHolder() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("///???");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[3]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void symbolsHolder() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("///???");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.cardNameFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("Two CVC")
-    void twoCVC() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("11");
-        $x("//div[4]/button").click();
-        $x("//div[3]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void twoCVC() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("11");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.cvvFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("Letters CVC")
-    void lettersCVC() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("qwe");
-        $x("//div[4]/button").click();
-        $x("//div[3]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void lettersCVC() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("qwe");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.cvvFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("Symbols CVC")
-    void symbolsCVC() {
-        $("button.button").find(byText("Купить")).click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("///");
-        $x("//div[4]/button").click();
-        $x("//div[3]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+    public void symbolsCVC() {
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("///");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.cvvFormat("Неверный формат");
     }
 }
 

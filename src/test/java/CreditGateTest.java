@@ -32,39 +32,35 @@ public class CreditGateTest {
     @Test
     @DisplayName("All Credit valid")
     void allCreditValid() {
-        $x("//div/button[2]").click();
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $(".notification__content")
-                .shouldBe(Condition.visible, Duration.ofSeconds(15))
-                .shouldHave(Condition.exactText("Операция одобрена Банком."));
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.waitForNotification("Операция одобрена Банком.");
+
 
     }
 
     @Test
     @DisplayName("InvalidCredit")
     void inValid() {
-        $x("//div/button[2]").click();
-        $x("//div[1]/span/span/span[2]/input").setValue("");
-        $x("//div[2]/span/span[1]//input").setValue("");
-        $x("//div[2]/span/span[2]//input").setValue("");
-        $x("//div[3]/span/span[1]//input").setValue("");
-        $x("//div[3]/span/span[2]//input").setValue("");
-        $x("//div[4]/button").click();
-        $x("//div[1]/span//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
-        $x("//div[2]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
-        $x("//div[2]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
-        $x("//div[3]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Поле обязательно для заполнения"));
-        $x("//div[3]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
+        poCredit.enterCardNumber("");
+        poCredit.enterExpiryMonth("");
+        poCredit.enterExpiryYear("");
+        poCredit.enterCardHolderName("");
+        poCredit.enterCVV("");
+        poCredit.clickSubmitButton();
+        poCredit.cardNumberFormat("Неверный формат");
+        poCredit.expiryMonthFormat("Неверный формат");
+        poCredit.expiryYearFormat("Неверный формат");
+        poCredit.cardNameSure("Поле обязательно для заполнения");
+        poCredit.cvvFormat("Неверный формат");
 
 
     }
@@ -72,315 +68,310 @@ public class CreditGateTest {
     @Test
     @DisplayName("Card15DigitCredit")
     void card15DigitInvalid() {
-        $x("//div/button[2]").click();
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 444");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[1]/span//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
+        poCredit.enterCardNumber("4444 4444 4444 444");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.cardNumberFormat("Неверный формат");
 
     }
 
     @Test
     @DisplayName("Card17DigitCredit")
     void card17DigitInvalid() {
-        $x("//div/button[2]").click();
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 44415");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[1]/span//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
+        poCredit.enterCardNumber("4444 4444 4444 44415");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.cardNumberFormat("Неверный формат");
 
     }
 
     @Test
     @DisplayName("CardLetters")
     void cardLettersInvalid() {
-        $x("//div/button[2]").click();
-        $x("//div[1]/span/span/span[2]/input").setValue("qwerty");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[1]/span//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
+        poCredit.enterCardNumber("qwerty");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.cardNumberFormat("Неверный формат");
 
     }
 
     @Test
     @DisplayName("Card Symbol Credit")
     void cardSymbolInvalid() {
-        $x("//div/button[2]").click();
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
 
-        $x("//div[1]/span/span/span[2]/input").setValue("///???");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[1]/span//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        poCredit.enterCardNumber("///???");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.cardNumberFormat("Неверный формат");
 
     }
 
     @Test
     @DisplayName("OneDigitMonthCreditCredit")
     void oneDigitMonth() {
-        $x("//div/button[2]").click();
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("7");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("7");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.expiryMonthFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("ThreeDigitMonthCredit")
     void ThreeDigitMonth() {
-        $x("//div/button[2]").click();
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("155");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверно указан срок действия карты"));
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("155");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.monthNotFormat("Неверно указан срок действия карты");
     }
 
     @Test
     @DisplayName("ThirteenMonthCredit")
     void thirteenMonth() {
-        $x("//div/button[2]").click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("13");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверно указан срок действия карты"));
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("13");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.monthNotFormat("Неверно указан срок действия карты");
     }
 
     @Test
     @DisplayName("Letters Month Credit")
     void lettersMonth() {
-        $x("//div/button[2]").click();
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("qwerty");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("qwerty");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.expiryMonthFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("Symbols Month Credit")
     void symbolsMonth() {
-        $x("//div/button[2]").click();
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
 
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("///???");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("///???");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.expiryMonthFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("OneDigitYearCredit")
     void oneDigitYear() {
-        $x("//div/button[2]").click();
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("2");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("2");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.expiryYearFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("ThreeDigitYearCredit")
     void ThreeDigitYear() {
-        $x("//div/button[2]").click();
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("345");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверно указан срок действия карты"));
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("345");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.yearNotFormat("Неверно указан срок действия карты");
     }
 
     @Test
     @DisplayName("PreviousYearCredit")
     void previousYear() {
-        $x("//div/button[2]").click();
-
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("23");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[2]//span[3]")
-                .shouldBe(Condition.visible, Duration.ofSeconds(15))
-                .shouldHave(Condition.exactText("Истёк срок действия карты"));
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("23");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.yearExpired("Истёк срок действия карты");
 
     }
 
     @Test
     @DisplayName("Letters Year Credit")
     void lettersYear() {
-        $x("//div/button[2]").click();
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
 
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("qwerty");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("qwerty");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.expiryYearFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("Symbol Year Credit")
     void symbolYear() {
-        $x("//div/button[2]").click();
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
 
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("///???");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[2]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("///???");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.expiryYearFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("DigitHolderCredit")
     void digitHolder() {
-        $x("//div/button[2]").click();
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
 
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("12345");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[3]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
-
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("12345");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.cardNameFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("OneLetterHolderCredit")
     void oneLetterHolder() {
-        $x("//div/button[2]").click();
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("V");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[3]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("V");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.cardNameFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("RuHolderCredit")
     void ruHolder() {
-        $x("//div/button[2]").click();
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
 
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Владимирова");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[3]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
-
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("Владимирова");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.cardNameFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("SymbolsHolderCredit")
     void symbolsHolder() {
-        $x("//div/button[2]").click();
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
 
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("///???");
-        $x("//div[3]/span/span[2]//input").setValue("111");
-        $x("//div[4]/button").click();
-        $x("//div[3]/span/span[1]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("///???");
+        poCredit.enterCVV("111");
+        poCredit.clickSubmitButton();
+        poCredit.cardNameFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("Two CVC Credit")
     void twoCVC() {
-        $x("//div/button[2]").click();
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
 
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("11");
-        $x("//div[4]/button").click();
-        $x("//div[3]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("11");
+        poCredit.clickSubmitButton();
+        poCredit.cvvFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("Letters CVC Credit")
     void lettersCVC() {
-        $x("//div/button[2]").click();
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
 
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("qwe");
-        $x("//div[4]/button").click();
-        $x("//div[3]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("qwe");
+        poCredit.clickSubmitButton();
+        poCredit.cvvFormat("Неверный формат");
     }
 
     @Test
     @DisplayName("Symbols CVC Credit")
     void symbolsCVC() {
-        $x("//div/button[2]").click();
+        POCredit poCredit = new POCredit();
+        poCredit.clickBuyButton();
 
-        $x("//div[1]/span/span/span[2]/input").setValue("4444 4444 4444 4441");
-        $x("//div[2]/span/span[1]//input").setValue("07");
-        $x("//div[2]/span/span[2]//input").setValue("27");
-        $x("//div[3]/span/span[1]//input").setValue("Vladimirova");
-        $x("//div[3]/span/span[2]//input").setValue("///");
-        $x("//div[4]/button").click();
-        $x("//div[3]/span/span[2]//span[3]")
-                .shouldHave(Condition.exactText("Неверный формат"));
+        poCredit.enterCardNumber("4444 4444 4444 4441");
+        poCredit.enterExpiryMonth("07");
+        poCredit.enterExpiryYear("27");
+        poCredit.enterCardHolderName("Vladimirova");
+        poCredit.enterCVV("///");
+        poCredit.clickSubmitButton();
+        poCredit.cvvFormat("Неверный формат");
     }
 
 }

@@ -65,6 +65,7 @@ public class CheckoutPage {
         $x("//div[3]/span/span[2]//span[3]")
                 .shouldHave(Condition.exactText("Неверный формат"));
     }
+
     public void cardNameFormat(String expectedText) {
         $x("//div[3]/span/span[1]//span[3]")
                 .shouldHave(Condition.exactText("Неверный формат"));

@@ -2,7 +2,6 @@ import lombok.SneakyThrows;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 
@@ -23,15 +22,20 @@ public class ConnectionMysqlConfig {
     }
 
     @SneakyThrows
-    public void executeQueryAndPrint(String sqlStatement) {
-        ResultSet resultSet = conn.prepareStatement(sqlStatement).executeQuery();
-        if (resultSet.next()) {
-            System.out.println(resultSet.get());
-            //select ord.id, pa.status as payment, cr.status as credit
-            //from app.order_entity ord
-            //left join app.payment_entity pa on ord.payment_id = pa.transaction_id
-            //left join app.credit_request_entity cr on ord.payment_id = cr.bank_id
-        }
+    public String executeQueryAndGetValue(String columnName) {
+        ResultSet resultSet = conn.prepareStatement(
+                        "select ord.id, pa.status as payment, cr.status as credit\n" +
+                                "from app.order_entity ord \n" +
+                                "left join app.payment_entity pa on ord.payment_id = pa.transaction_id\n" +
+                                "left join app.credit_request_entity cr on ord.payment_id = cr.bank_id;"
+                )
+                .executeQuery();
+
+        resultSet.next();
+
+        return resultSet.getString(columnName);
+
+
     }
 
     @SneakyThrows

@@ -1,10 +1,4 @@
-import lombok.SneakyThrows;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
-import java.sql.DriverManager;
+import org.junit.jupiter.api.*;
 
 import static com.codeborne.selenide.Selenide.open;
 
@@ -20,21 +14,6 @@ public class DBTest {
                 .executePrepareStatement("truncate table payment_entity")
                 .executePrepareStatement("truncate table order_entity")
                 .executePrepareStatement("truncate table credit_request_entity");
-//        var dataSql = "insert into user(login, password) values (?, ?);";
-//        var truncatePaymentEntity = "truncate table payment_entity";
-//        var truncateOrderEntity = "truncate table order_entity";
-//        var truncateCredit_request_entityEntity = "truncate table credit_request_entity";
-//
-//        try (
-//            var conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/app", "app", "pass");
-//            var dataStmt = conn.prepareStatement(truncatePaymentEntity);
-//            var dataStmt2 = conn.prepareStatement(truncateOrderEntity);
-//            var dataStmt3 = conn.prepareStatement(truncateCredit_request_entityEntity);
-//        ) {
-//            dataStmt.executeUpdate();
-//            dataStmt2.executeUpdate();
-//            dataStmt3.executeUpdate();
-//        }
     }
 
     @AfterEach
@@ -56,7 +35,28 @@ public class DBTest {
         poCredit.clickSubmitButton();
         poCredit.waitForNotification("Операция одобрена Банком.");
 
-        connectionMysqlConfig.executeQueryAndPrint("SELECT * FROM credit_request_entity;");
+        String actualCreditValue = connectionMysqlConfig.executeQueryAndGetValue("credit");
+
+        Assertions.assertEquals("APPROVED", actualCreditValue);
 
     }
-}
+
+    @Test
+    @DisplayName("All valid")
+    public void allValid() {
+        open("http://localhost:8080");
+        CheckoutPage checkoutPage = new CheckoutPage();
+        checkoutPage.clickBuyButton();
+        checkoutPage.enterCardNumber("4444 4444 4444 4441");
+        checkoutPage.enterExpiryMonth("07");
+        checkoutPage.enterExpiryYear("27");
+        checkoutPage.enterCardHolderName("Vladimirova");
+        checkoutPage.enterCVV("111");
+        checkoutPage.clickSubmitButton();
+        checkoutPage.waitForNotification("Операция одобрена Банком.");
+        String actualPaymentValue = connectionMysqlConfig.executeQueryAndGetValue("payment");
+
+        Assertions.assertEquals("APPROVED", actualPaymentValue);
+    }
+
+    }

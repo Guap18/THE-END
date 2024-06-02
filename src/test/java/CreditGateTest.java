@@ -14,9 +14,12 @@ import static com.codeborne.selenide.Selenide.$x;
 import static com.codeborne.selenide.Selenide.open;
 
 public class CreditGateTest {
+    private final ConnectionMysqlConfig connectionMysqlConfig = new ConnectionMysqlConfig();
+
     @BeforeAll
     static void setAll() {
         SelenideLogger.addListener("allure", new AllureSelenide());
+
     }
 
     @AfterAll
@@ -27,6 +30,16 @@ public class CreditGateTest {
     @BeforeEach
     void setup() {
         open("http://localhost:8080");
+        connectionMysqlConfig
+                .connect()
+                .executePrepareStatement("truncate table payment_entity")
+                .executePrepareStatement("truncate table order_entity")
+                .executePrepareStatement("truncate table credit_request_entity");
+    }
+
+    @AfterEach
+    void tearDown() {
+        connectionMysqlConfig.connectionClose();
     }
 
     @Test
@@ -42,7 +55,9 @@ public class CreditGateTest {
         poCredit.clickSubmitButton();
         poCredit.waitForNotification("Операция одобрена Банком.");
 
+        String actual = connectionMysqlConfig.executeQueryAndGetValue("credit");
 
+        Assertions.assertEquals("APPROVED", actual);
     }
 
     @Test

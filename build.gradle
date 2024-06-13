@@ -37,5 +37,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
-    systemProperty 'selenide.headless', System.getProperty('selenide.headless')
+    systemProperty 'selenide.headless', 'false'
+    systemProperty 'username', 'app'
+    systemProperty 'password', 'pass'
 }

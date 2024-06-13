@@ -13,7 +13,8 @@ public class ConnectionMysqlConfig {
 
     @SneakyThrows
     public ConnectionMysqlConfig connect() {
-        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/app", "app", "pass");
+        conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/app",
+                System.getProperty("username"), System.getProperty("password"));
         return this;
     }
 

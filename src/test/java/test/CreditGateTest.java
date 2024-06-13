@@ -98,7 +98,6 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("OneDigitMonthCreditCredit")
     void oneDigitMonth() {
-
         creditPage.clickBuyCreditButton();
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("7");
@@ -112,7 +111,6 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("ThreeDigitMonthCredit")
     void ThreeDigitMonth() {
-
         creditPage.clickBuyCreditButton();
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("155");
@@ -126,7 +124,6 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("ThirteenMonthCredit")
     void thirteenMonth() {
-
         creditPage.clickBuyCreditButton();
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("13");
@@ -140,7 +137,6 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("Letters Month Credit")
     void lettersMonth() {
-
         creditPage.clickBuyCreditButton();
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("qwerty");
@@ -154,9 +150,7 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("Symbols Month Credit")
     void symbolsMonth() {
-
         creditPage.clickBuyCreditButton();
-
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("///???");
         creditPage.enterExpiryYear("27");
@@ -169,7 +163,6 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("OneDigitYearCredit")
     void oneDigitYear() {
-
         creditPage.clickBuyCreditButton();
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("07");
@@ -183,7 +176,6 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("ThreeDigitYearCredit")
     void ThreeDigitYear() {
-
         creditPage.clickBuyCreditButton();
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("07");
@@ -197,7 +189,6 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("PreviousYearCredit")
     void previousYear() {
-
         creditPage.clickBuyCreditButton();
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("07");
@@ -212,9 +203,7 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("Letters Year Credit")
     void lettersYear() {
-
         creditPage.clickBuyCreditButton();
-
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("07");
         creditPage.enterExpiryYear("qwerty");
@@ -227,9 +216,7 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("Symbol Year Credit")
     void symbolYear() {
-
         creditPage.clickBuyCreditButton();
-
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("07");
         creditPage.enterExpiryYear("///???");
@@ -242,9 +229,7 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("DigitHolderCredit")
     void digitHolder() {
-
         creditPage.clickBuyCreditButton();
-
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("07");
         creditPage.enterExpiryYear("27");
@@ -257,7 +242,6 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("OneLetterHolderCredit")
     void oneLetterHolder() {
-
         creditPage.clickBuyCreditButton();
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("07");
@@ -271,9 +255,7 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("RuHolderCredit")
     void ruHolder() {
-
         creditPage.clickBuyCreditButton();
-
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("07");
         creditPage.enterExpiryYear("27");
@@ -286,9 +268,7 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("SymbolsHolderCredit")
     void symbolsHolder() {
-
         creditPage.clickBuyCreditButton();
-
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("07");
         creditPage.enterExpiryYear("27");
@@ -301,9 +281,7 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("Two CVC Credit")
     void twoCVC() {
-
         creditPage.clickBuyCreditButton();
-
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("07");
         creditPage.enterExpiryYear("27");
@@ -316,9 +294,7 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("Letters CVC Credit")
     void lettersCVC() {
-
         creditPage.clickBuyCreditButton();
-
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("07");
         creditPage.enterExpiryYear("27");
@@ -331,9 +307,7 @@ public class CreditGateTest extends BaseTest {
     @Test
     @DisplayName("Symbols CVC Credit")
     void symbolsCVC() {
-
         creditPage.clickBuyCreditButton();
-
         creditPage.enterCardNumber("4444 4444 4444 4441");
         creditPage.enterExpiryMonth("07");
         creditPage.enterExpiryYear("27");
@@ -342,5 +316,4 @@ public class CreditGateTest extends BaseTest {
         creditPage.clickSubmitButton();
         creditPage.cvvFormat("Неверный формат");
     }
-
 }

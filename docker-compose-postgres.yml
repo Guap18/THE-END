@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+
+  app:
+    build: artifacts
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_CREDIT_GATE_URL=http://nodejs:9999/payment
+      - SPRING_PAYMENT_GATE_URL=http://nodejs:9999/payment
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/app
+      - SPRING_DATASOURCE_USERNAME=app
+      - SPRING_DATASOURCE_PASSWORD=pass
+    depends_on:
+      - postgres
+      - nodejs
+
+  postgres:
+    image: postgres:13-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: app
+    volumes:
+      - ./data:/var/lib/postgresql
+
+  nodejs:
+    image: node:latest
+    ports:
+      - '9999:9999'
+    working_dir: /opt/app
+    volumes:
+      - ./gate-simulator:/opt/app
+    command: npm start

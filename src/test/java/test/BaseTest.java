@@ -2,47 +2,40 @@ package test;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
-import config.ConnectionMysqlConfig;
+import config.DatabaseConnector;
+import database.DatabaseQueryExecutor;
 import io.qameta.allure.selenide.AllureSelenide;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import page.CreditPage;
-import test_data.CreditFormTestData;
 
 import static com.codeborne.selenide.Selenide.open;
 
-public class BaseTest {
-    protected final ConnectionMysqlConfig connectionMysqlConfig = new ConnectionMysqlConfig();
-    protected CreditPage creditPage = new CreditPage();
-    protected CreditFormTestData creditFormTestData = new CreditFormTestData("4444 4444 4444 4441");
+public abstract class BaseTest {
 
-    @BeforeAll
-    static void setAll() {
-        SelenideLogger.addListener("allure", new AllureSelenide());
-    }
+  protected CreditPage creditPage = new CreditPage();
 
-    @AfterAll
-    static void tearDownAll() {
-        SelenideLogger.removeListener("allure");
-    }
+  protected final DatabaseQueryExecutor databaseQueryExecutor = new DatabaseQueryExecutor();
 
-    @BeforeEach
-    void setup() {
-        connectionMysqlConfig
-                .connect()
-                .executePrepareStatement("truncate table payment_entity")
-                .executePrepareStatement("truncate table order_entity")
-                .executePrepareStatement("truncate table credit_request_entity");
 
-        Configuration.headless = Boolean.parseBoolean(System.getProperty("selenide.headless"));
+  @BeforeEach
+  void setup() {
+    databaseQueryExecutor.deleteAll();
+    Configuration.headless = Boolean.parseBoolean(System.getProperty("selenide.headless"));
+    open("http://localhost:8080");
+  }
 
-        open("http://localhost:8080");
-    }
+  @BeforeAll
+  static void setAll() {
+    SelenideLogger.addListener("allure", new AllureSelenide());
+  }
 
-    @AfterEach
-    void tearDown() {
-        connectionMysqlConfig.connectionClose();
-    }
+  @AfterAll
+  @SneakyThrows
+  static void tearDownAll() {
+    SelenideLogger.removeListener("allure");
+    DatabaseConnector.connection.close();
+  }
 }

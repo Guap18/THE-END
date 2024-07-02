@@ -23,21 +23,32 @@ repositories {
 
 }
 
-
 dependencies {
+    implementation 'org.slf4j:slf4j-api:1.7.30'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.7.0'
+
     testImplementation 'com.codeborne:selenide:6.17.1'
-    testImplementation 'com.github.javafaker:javafaker:1.0.2'
     testImplementation 'io.qameta.allure:allure-selenide:2.20.1'
     testImplementation "io.qameta.allure:allure-junit5"
-    testImplementation 'mysql:mysql-connector-java:8.0.18'
 
+    testImplementation 'mysql:mysql-connector-java:8.0.18'
+    testImplementation 'org.postgresql:postgresql:42.2.18'
+
+    testImplementation 'org.testcontainers:testcontainers:1.17.3'
+    testImplementation 'org.testcontainers:junit-jupiter:1.17.3'
+    testImplementation 'org.testcontainers:jdbc:1.17.3'
+    testImplementation 'org.testcontainers:postgresql:1.17.3'
 }
 
 test {
     useJUnitPlatform()
     systemProperty 'selenide.headless', 'false'
+
     systemProperty 'username', 'app'
     systemProperty 'password', 'pass'
+
+    systemProperty 'mysql.url', 'jdbc:mysql://localhost:3306/app'
+    systemProperty 'postgres.url', 'jdbc:postgresql://localhost:5432/app'
 }

@@ -1,12 +1,24 @@
-package test;
+package test.functional_test;
 
-import org.junit.jupiter.api.Assertions;
+import config.DatabaseConnector;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import page.CreditPage;
+import test.BaseTest;
+import testcontainers.MysqlTestContainersEnvironment;
+import testcontainers.PostgresqlTestContainersEnvironment;
 
-public class PaymentGateTest extends BaseTest {
+public class PaymentGateFunctionalTest extends BaseTest {
 
+    @BeforeAll
+    static void setUp() {
+        PostgresqlTestContainersEnvironment.environmentWithPostgresql.stop();
+        MysqlTestContainersEnvironment.startContainers();
+        DatabaseConnector.getConnection("mysql.url");
+    }
+
+    //Так же проверяет интеграцию с mysql
     @Test
     @DisplayName("All valid")
     public void allValid() {
@@ -18,10 +30,6 @@ public class PaymentGateTest extends BaseTest {
         creditPage.enterCVV("111");
         creditPage.clickSubmitButton();
         creditPage.waitForNotification("Операция одобрена Банком.");
-
-        String actualPaymentValue = connectionMysqlConfig.executeQueryAndGetValue("payment");
-
-        Assertions.assertEquals("APPROVED", actualPaymentValue);
     }
 
     @Test

@@ -6,7 +6,8 @@ import locator.CreditPageLocators;
 import java.time.Duration;
 
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.*;
+import static com.codeborne.selenide.Selenide.$;
+import static com.codeborne.selenide.Selenide.$x;
 
 //без изменений
 public class CreditPage {
@@ -47,47 +48,47 @@ public class CreditPage {
     public void waitForNotification(String expectedText) {
         $(CreditPageLocators.NOTIFICATION)
                 .shouldBe(Condition.visible, Duration.ofSeconds(15))
-                .shouldHave(Condition.exactText("Операция одобрена Банком."));
+                .shouldHave(Condition.exactText(expectedText));
     }
 
     public void cardNumberFormat(String expectedText) {
         $x(CreditPageLocators.CARD_NUMBER)
-                .shouldHave(Condition.exactText("Неверный формат"));
+                .shouldHave(Condition.exactText(expectedText));
     }
 
     public void expiryMonthFormat(String expectedText) {
         $x(CreditPageLocators.EPIRY_MONTH_FORMAT)
-                .shouldHave(Condition.exactText("Неверный формат"));
+                .shouldHave(Condition.exactText(expectedText));
     }
 
     public void expiryYearFormat(String expectedText) {
         $x(CreditPageLocators.EXPIRY_YEAR_FORMAT)
-                .shouldHave(Condition.exactText("Неверный формат"));
+                .shouldHave(Condition.exactText(expectedText));
     }
 
     public void cardNameSure(String expectedText) {
         $x(CreditPageLocators.CARD_NAME_SURE)
-                .shouldHave(Condition.exactText("Поле обязательно для заполнения"));
+                .shouldHave(Condition.exactText(expectedText));
     }
 
     public void cvvFormat(String expectedText) {
         $x(CreditPageLocators.CVV_FORMAT)
-                .shouldHave(Condition.exactText("Неверный формат"));
+                .shouldHave(Condition.exactText(expectedText));
     }
     public void cardNameFormat(String expectedText) {
         $x(CreditPageLocators.CARD_FORMAT)
-                .shouldHave(Condition.exactText("Неверный формат"));
+                .shouldHave(Condition.exactText(expectedText));
     }
 
     public void yearExpired(String expectedText) {
         $x(CreditPageLocators.YEAR_EXPIRED)
                 .shouldBe(Condition.visible, Duration.ofSeconds(15))
-                .shouldHave(Condition.exactText("Истёк срок действия карты"));
+                .shouldHave(Condition.exactText(expectedText));
     }
 
     public void yearNotFormat(String expectedText) {
         $x(CreditPageLocators.YEAR_NOT_FORMAT)
-                .shouldHave(Condition.exactText("Неверно указан срок действия карты"));
+                .shouldHave(Condition.exactText(expectedText));
     }
 
     public void monthNotFormat(String expectedText) {
